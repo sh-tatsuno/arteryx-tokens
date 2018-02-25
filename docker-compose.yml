@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: .
+    volumes:
+      - ".:/api"
+    expose:
+      - "5000"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - testrpc
+
+  testrpc:
+    image: harshjv/testrpc
+    ports:
+      - "8545:8545"
