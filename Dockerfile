@@ -9,7 +9,7 @@ WORKDIR $project_dir
 ADD . $project_dir
 RUN pip install -r requirements.txt
 
-RUN apk add --no-cache nodejs
+RUN apk add nodejs
 RUN npm init -y
 RUN npm install -g truffle
 RUN truffle install zeppelin

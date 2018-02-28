@@ -9,7 +9,7 @@ def hello_world():
 
 @app.route('/migrate')
 def migrate():
-    os.system("truffle migrate")
+    os.system("truffle migrate --network testrpc")
     return '', 200
 
 @app.route('/balance')
