@@ -5,15 +5,17 @@ module.exports = {
   		development: {
   			host: "localhost",
   			port: 8545,
-  			network_id: "*",
-        gas: 4712388 //fixed num
+  			network_id: "10",
+        gas: 4712388, //fixed num
+        gasPrice: 22000000000 // Specified in Wei
+        // Error: Exceeds block gas limit -> check gas or gasPrice
   		},
 
       testrpc: {
   			host: "testrpc",
   			port: 8545,
-  			network_id: "*",
-        gas: 4712388 //fixed num
+  			network_id: "*", //fixed num
+        gasPrice: 22000000000 // Specified in Wei
   		},
 
   	},
