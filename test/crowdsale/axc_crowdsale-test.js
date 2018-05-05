@@ -22,6 +22,7 @@ contract('AXCCrowdsale', function ([_, investor, wallet, purchaser]) {
   const tokenSupply = new BigNumber('1e22');
   const goal = web3.toWei(10000, 'ether');
   const cap = web3.toWei(1000000 , 'ether');
+  const tokencap = web3.toWei(10000000 , 'ether');
 
   before(async function () {
     // Advance to the next block to correctly read time in the solidity "now" function interpreted by ganache
@@ -32,7 +33,7 @@ contract('AXCCrowdsale', function ([_, investor, wallet, purchaser]) {
     this.openingTime = latestTime() + duration.weeks(1);
     this.closingTime = this.openingTime + duration.weeks(1);
     this.afterClosingTime = this.closingTime + duration.seconds(1);
-    this.token = await AXCToken.new();
+    this.token = await AXCToken.new(tokencap);
     this.crowdsale = await AXCCrowdsale.new(
       this.openingTime,
       this.closingTime,

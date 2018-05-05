@@ -2,9 +2,9 @@ import assertRevert from "zeppelin-solidity/test/helpers/assertRevert";
 
 const PausableToken = artifacts.require('./AXCTokenMock');
 
-contract('PausableToken', function ([_, owner, recipient, anotherAccount]) {
+contract('PausableToken', function ([_, owner, recipient, anotherAccount, cap]) {
   beforeEach(async function () {
-    this.token = await PausableToken.new(owner, 100, { from: owner });
+    this.token = await PausableToken.new(owner, 100, cap, { from: owner });
   });
 
   describe('pause', function () {
