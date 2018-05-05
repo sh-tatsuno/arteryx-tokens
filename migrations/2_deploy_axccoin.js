@@ -17,11 +17,15 @@ module.exports = function(deployer, network, accounts) {
   const rate = new web3.BigNumber(1000); // trade rate from ETH
   const goal = web3.toWei(10000, 'ether');
   const cap = web3.toWei(1000000 , 'ether');
+  const tokencap = web3.toWei(10000000 , 'ether');
   const wallet = accounts[0];
 
   return deployer
         .then(async () => {
-            return deployer.deploy(AXCToken);
+            return deployer.deploy(
+              AXCToken,
+              tokencap
+            );
         })
         .then(async () => {
           const timestamp = (await promisefy(web3.eth.getBlock, 'latest')).timestamp;
