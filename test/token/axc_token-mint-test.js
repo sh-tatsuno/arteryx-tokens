@@ -4,7 +4,7 @@ const MintableToken = artifacts.require('./AXCToken.sol');
 
 contract('Mintable', function ([owner, anotherAccount]) {
   beforeEach(async function () {
-    this.token = await MintableToken.new({ from: owner });
+    this.token = await MintableToken.new(web3.toWei(10000000 , 'ether'), { from: owner });
   });
 
   describe('minting finished', function () {

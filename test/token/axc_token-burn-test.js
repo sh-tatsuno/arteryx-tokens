@@ -4,7 +4,7 @@ const BurnableTokenMock = artifacts.require('./AXCTokenMock.sol');
 
 contract('BurnableToken', function ([owner]) {
   beforeEach(async function () {
-    this.token = await BurnableTokenMock.new(owner, 1000);
+    this.token = await BurnableTokenMock.new(owner, 1000, web3.toWei(100000 , 'ether'));
   });
 
   describe('burn', function () {
