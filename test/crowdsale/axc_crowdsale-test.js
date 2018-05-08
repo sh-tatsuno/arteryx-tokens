@@ -17,13 +17,12 @@ const AXCToken = artifacts.require('./AXCToken.sol');
 const RefundVault = artifacts.require('zeppelin-solidity/contracts/crowdsale/distribution/utils/RefundVault.sol');
 
 contract('AXCCrowdsale', function ([_, investor, wallet, purchaser]) {
-  const rate = new BigNumber(1);
-  const value = ether(42);
+  const rate = new BigNumber(10000);
+  const value = ether(1);
   const tokenSupply = new BigNumber('1e22');
   const goal = web3.toWei(10000, 'ether');
   const cap = web3.toWei(1000000 , 'ether');
   const tokencap = web3.toWei(10000000 , 'ether');
-
   before(async function () {
     // Advance to the next block to correctly read time in the solidity "now" function interpreted by ganache
     await advanceBlock();
@@ -31,9 +30,13 @@ contract('AXCCrowdsale', function ([_, investor, wallet, purchaser]) {
 
   beforeEach(async function () {
     this.openingTime = latestTime() + duration.weeks(1);
-    this.closingTime = this.openingTime + duration.weeks(1);
+    this.closingTime = this.openingTime + duration.weeks(6);
     this.afterClosingTime = this.closingTime + duration.seconds(1);
     this.token = await AXCToken.new(tokencap);
+    this.preSalePeriod = this.openingTime + duration.weeks(1);
+    this.week1Period = this.openingTime + duration.weeks(2);
+    this.week2Period = this.openingTime + duration.weeks(3);
+    this.week3Period = this.openingTime + duration.weeks(4);
     this.crowdsale = await AXCCrowdsale.new(
       this.openingTime,
       this.closingTime,
@@ -72,6 +75,37 @@ contract('AXCCrowdsale', function ([_, investor, wallet, purchaser]) {
         await this.crowdsale.send(value).should.be.fulfilled;
         await this.crowdsale.buyTokens(investor, { value: value, from: purchaser }).should.be.fulfilled;
      });
+
+     it('should change PurchaseRate at PreSale', async function(){
+        await increaseTimeTo(this.preSalePeriod - 10);
+        await this.crowdsale.buyTokens(investor, { from: purchaser, value: value });
+        let balance = await this.token.balanceOf(investor);
+        balance.should.be.bignumber.equal(value.mul(12000));
+     });
+     it('should change PurchaseRate at Week1', async function(){
+        await increaseTimeTo(this.week1Period - 10);
+        await this.crowdsale.buyTokens(investor, { from: purchaser, value: value });
+        let balance = await this.token.balanceOf(investor);
+        balance.should.be.bignumber.equal(value.mul(11500));
+     });
+     it('should change PurchaseRate at Week2', async function(){
+        await increaseTimeTo(this.week2Period - 10);
+        await this.crowdsale.buyTokens(investor, { from: purchaser, value: value });
+        let balance = await this.token.balanceOf(investor);
+        balance.should.be.bignumber.equal(value.mul(11000));
+     });
+     it('should change PurchaseRate at Week3', async function(){
+        await increaseTimeTo(this.week3Period - 10);
+        await this.crowdsale.buyTokens(investor, { from: purchaser, value: value });
+        let balance = await this.token.balanceOf(investor);
+        balance.should.be.bignumber.equal(value.mul(10500));
+     });
+     it('should change PurchaseRate at Week4(LastWeek)', async function(){
+        await increaseTimeTo(this.closingTime - 10);
+        await this.crowdsale.buyTokens(investor, { from: purchaser, value: value });
+        let balance = await this.token.balanceOf(investor);
+        balance.should.be.bignumber.equal(value.mul(10000));
+     });
    });
 
    it('should reject payments after end', async function () {
@@ -79,7 +113,4 @@ contract('AXCCrowdsale', function ([_, investor, wallet, purchaser]) {
      await this.crowdsale.send(value).should.be.rejectedWith(EVMRevert);
      await this.crowdsale.buyTokens(investor, { value: value, from: purchaser }).should.be.rejectedWith(EVMRevert);
    });
-
-
-
-});
+ });

@@ -1,15 +1,11 @@
 pragma solidity ^0.4.18;
-
 import "./AXCToken.sol";
 import "zeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol";
 import "zeppelin-solidity/contracts/crowdsale/validation/CappedCrowdsale.sol";
 import "zeppelin-solidity/contracts/crowdsale/distribution/RefundableCrowdsale.sol";
 import "zeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol";
 import "zeppelin-solidity/contracts/token/ERC20/MintableToken.sol";
-
-
 contract AXCCrowdsale is CappedCrowdsale, MintedCrowdsale, TimedCrowdsale, RefundableCrowdsale {
-
   function AXCCrowdsale(
     uint256 _openingTime,
     uint256 _closingTime,
@@ -27,13 +23,12 @@ contract AXCCrowdsale is CappedCrowdsale, MintedCrowdsale, TimedCrowdsale, Refun
   {
     require(_goal <= _cap);
   }
-
   //override Crowdsale.sol in zeppelin-solidity.
   function _getTokenAmount(uint256 _weiAmount) internal view returns (uint256) {
-    uint256 periodOfPreSale = 1525743669 + 1 weeks;
-    uint256 periodOfWeek1 = 1525743669 + 2 weeks;
-    uint256 periodOfWeek2 = 1525743669 + 3 weeks;
-    uint256 periodOfWeek3 = 1525743669 + 4 weeks;
+    uint256 periodOfPreSale = openingTime + 1 weeks;
+    uint256 periodOfWeek1 = openingTime + 2 weeks;
+    uint256 periodOfWeek2 = openingTime + 3 weeks;
+    uint256 periodOfWeek3 = openingTime + 4 weeks;
     if(now < periodOfPreSale){
         rate = 12000;
     }else if (now > periodOfPreSale && now < periodOfWeek1){
@@ -45,6 +40,4 @@ contract AXCCrowdsale is CappedCrowdsale, MintedCrowdsale, TimedCrowdsale, Refun
     }
     return _weiAmount.mul(rate);
   }
-
 }
-
