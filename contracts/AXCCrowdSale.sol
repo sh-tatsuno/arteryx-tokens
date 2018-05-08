@@ -27,4 +27,24 @@ contract AXCCrowdsale is CappedCrowdsale, MintedCrowdsale, TimedCrowdsale, Refun
   {
     require(_goal <= _cap);
   }
+
+  //override Crowdsale.sol in zeppelin-solidity.
+  function _getTokenAmount(uint256 _weiAmount) internal view returns (uint256) {
+    uint256 periodOfPreSale = 1525743669 + 1 weeks;
+    uint256 periodOfWeek1 = 1525743669 + 2 weeks;
+    uint256 periodOfWeek2 = 1525743669 + 3 weeks;
+    uint256 periodOfWeek3 = 1525743669 + 4 weeks;
+    if(now < periodOfPreSale){
+        rate = 12000;
+    }else if (now > periodOfPreSale && now < periodOfWeek1){
+        rate = 11500;
+    }else if (now > periodOfWeek1 && now < periodOfWeek2){
+        rate = 11000;
+    }else if (now > periodOfWeek2 && now < periodOfWeek3){
+        rate = 10500;
+    }
+    return _weiAmount.mul(rate);
+  }
+
 }
+
