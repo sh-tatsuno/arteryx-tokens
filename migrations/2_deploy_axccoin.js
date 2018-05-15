@@ -24,7 +24,7 @@ module.exports = function(deployer, network, accounts) {
         .then(async () => {
             return deployer.deploy(
               AXCToken,
-              tokencap
+              tokencap,{gas: 2000000}
             );
         })
         .then(async () => {
@@ -39,7 +39,7 @@ module.exports = function(deployer, network, accounts) {
               goal,
               wallet,
               cap,
-              AXCToken.address
+              AXCToken.address,{gas: 2000000}
           );
         }).then(async () => {
           const token = AXCToken.at(AXCToken.address);
