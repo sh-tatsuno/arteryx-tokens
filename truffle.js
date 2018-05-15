@@ -4,8 +4,8 @@ require('babel-register')({
 require('babel-polyfill');
 
 var HDWalletProvider = require("truffle-hdwallet-provider");
-var mnemonic = process.env.MNEMONIC;
-var accessToken = process.env.INFURA_ACCESS_TOKEN;
+var mnemonic = "pattern era defense beyond fury tent umbrella balcony robust stand gun feature";
+var accessToken = "1IViwDLmJXZq5Ri4sKv8";
 
 module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
@@ -35,8 +35,8 @@ module.exports = {
           );
         },
         network_id: 3,
-        gas: 4700000,
-        gasPrice: 22000000000 // Specified in Wei
+        gas: 500000
+        
       },
 
 
