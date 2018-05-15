@@ -30,7 +30,7 @@ module.exports = function(deployer, network, accounts) {
         .then(async () => {
           const timestamp = (await promisefy(web3.eth.getBlock, 'latest')).timestamp;
           const openingTime = timestamp + duration.minutes(1);
-          const closingTime = openingTime + duration.minutes(10);
+          const closingTime = openingTime + duration.days(10);
           return deployer.deploy(
               AXCCrowdsale,
               openingTime,
@@ -41,6 +41,9 @@ module.exports = function(deployer, network, accounts) {
               cap,
               AXCToken.address
           );
+        }).then(async () => {
+          const token = AXCToken.at(AXCToken.address);
+          token.transferOwnership(AXCCrowdsale.address);
         });
 
 };
