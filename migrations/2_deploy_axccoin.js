@@ -28,9 +28,9 @@ module.exports = function(deployer, network, accounts) {
         })
         .then(async () => {
           const timestamp = (await promisefy(web3.eth.getBlock, 'latest')).timestamp;
-          const openingTime = timestamp + duration.minutes(5);
+          const openingTime = timestamp + duration.minutes(3);
           // const openingTime = timestamp + 120;
-          const closingTime = openingTime + duration.minutes(40);
+          const closingTime = openingTime + duration.minutes(20);
           return deployer.deploy(
               AXCCrowdsale,
               openingTime,
