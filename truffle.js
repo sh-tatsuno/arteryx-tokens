@@ -35,8 +35,8 @@ module.exports = {
           );
         },
         network_id: 3,
-        gas: 500000
-        
+        gas: 4700000,
+        gasPrice: 22000000000 // Specified in Wei
       },
 
 
