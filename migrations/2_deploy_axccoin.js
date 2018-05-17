@@ -13,10 +13,11 @@ const duration = {
 const promisefy = (fn, ...args) => new Promise((accept, reject) => fn(...args, (err, res) => err ? reject(err) : accept(res)))
 
 module.exports = function(deployer, network, accounts) {
-  // const timestamp = (await promisefy(web3.eth.getBlock, 'latest')).timestamp
-  const rate = new web3.BigNumber(1000); // trade rate from ETH
-  const goal = web3.toWei(10000, 'ether');
-  const cap = web3.toWei(1000000 , 'ether');
+
+  //const timestamp = (await promisefy(web3.eth.getBlock, 'latest')).timestamp
+  const rate = new web3.BigNumber(10000); // trade rate from ETH
+  const goal = web3.toWei(6, 'ether');
+  const cap = web3.toWei(7, 'ether');
   const tokencap = web3.toWei(10000000 , 'ether');
   const wallet = accounts[0];
 
@@ -29,8 +30,9 @@ module.exports = function(deployer, network, accounts) {
         })
         .then(async () => {
           const timestamp = (await promisefy(web3.eth.getBlock, 'latest')).timestamp;
-          const openingTime = timestamp + duration.minutes(1);
-          const closingTime = openingTime + duration.days(10);
+          const openingTime = timestamp + duration.minutes(3);
+          // const openingTime = timestamp + 120;
+          const closingTime = openingTime + duration.minutes(20);
           return deployer.deploy(
               AXCCrowdsale,
               openingTime,

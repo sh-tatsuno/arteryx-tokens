@@ -26,10 +26,11 @@ contract AXCCrowdsale is CappedCrowdsale, MintedCrowdsale, TimedCrowdsale, Refun
   }
   //override Crowdsale.sol in zeppelin-solidity.
   function _getTokenAmount(uint256 _weiAmount) internal view returns (uint256) {
-    uint256 periodOfPreSale = openingTime.add(1 weeks);
-    uint256 periodOfWeek1 = openingTime.add(2 weeks);
-    uint256 periodOfWeek2 = openingTime.add(3 weeks);
-    uint256 periodOfWeek3 = openingTime.add(4 weeks);
+
+    uint256 periodOfPreSale = openingTime.add(3 minutes);
+    uint256 periodOfWeek1 = openingTime.add(6 minutes);
+    uint256 periodOfWeek2 = openingTime.add(9 minutes);
+    uint256 periodOfWeek3 = openingTime.add(12 minutes);
     if(now < periodOfPreSale){
         rate = 12000;
     }else if (now > periodOfPreSale && now < periodOfWeek1){
@@ -38,7 +39,18 @@ contract AXCCrowdsale is CappedCrowdsale, MintedCrowdsale, TimedCrowdsale, Refun
         rate = 11000;
     }else if (now > periodOfWeek2 && now < periodOfWeek3){
         rate = 10500;
+    }else if (now > periodOfWeek3 && now < closingTime){
+        rate = 10000;
     }
     return _weiAmount.mul(rate);
+  }
+
+  function MintForAlloc(address team, address reserve) onlyOwner() public{
+    require(hasClosed());
+    uint256 totalAXC = token.totalSupply().mul(100).div(35);
+    uint256 amountForTeam = totalAXC.mul(15).div(100);
+    uint256 amountForReserve = totalAXC.div(2);
+    AXCToken(token).mint(team, amountForTeam);
+    AXCToken(token).mint(reserve, amountForReserve);
   }
 }
