@@ -4,8 +4,8 @@ require('babel-register')({
 require('babel-polyfill');
 
 var HDWalletProvider = require("truffle-hdwallet-provider");
-var mnemonic = "pattern era defense beyond fury tent umbrella balcony robust stand gun feature";
-var accessToken = "1IViwDLmJXZq5Ri4sKv8";
+var mnemonic = process.env.MNEMONIC;
+var accessToken = process.env.INFURA_ACCESS_TOKEN;
 
 module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
